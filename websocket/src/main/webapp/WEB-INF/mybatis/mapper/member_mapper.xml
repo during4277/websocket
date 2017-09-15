@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+1.parameterType에 1개의 Type만 올 수 있다.
+2.parameterType에 Map<key, value>타입인 경우 #{key}로 쓴다.
+3.resultType도 1개만 올 수 있는데 selectList인 경우 List로 반환한다.
+-->
+<mapper namespace="Member">
+	<select id="getMemberInfo" parameterType="String"
+	         resultType="member">
+		SELECT * FROM MINFO WHERE ID=#{id}
+	</select>
+
+	<select id="getLoginResult" parameterType="member" resultType="Integer">
+		SELECT COUNT(*) FROM MINFO WHERE ID=#{id} AND PW=#{pw}
+	</select>
+	<insert id="memberInsert" parameterType="member">
+		INSERT INTO M VALUES(#{id},#{pw},#{name},#{mbirth},
+		#{maddr},#{mphone},default)
+	</insert>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+1.parameterType에 1개의 Type만 올 수 있다.
+2.parameterType에 Map<key, value>타입인 경우 #{key}로 쓴다.
+3.resultType도 1개만 올 수 있는데 selectList인 경우 List로 반환한다.
+-->
+<mapper namespace="Board">
+	<select id="getBoardList" parameterType="Integer"
+	         resultType="board">
+		<![CDATA[
+		SELECT * FROM BLIST_1 WHERE
+		RNUM>=#{pageNum}*10-9 AND RNUM<=#{pageNum}*10
+		]]>
+	</select>
+	<select id="getContents" parameterType="Integer"
+	         resultType="board">
+		SELECT * FROM BLIST_1 WHERE BNUM=#{bnum}
+	</select>
+	
+	<select id="getReplyMaxNum" resultType="Integer">
+		SELECT MAX(RNUM) FROM RLIST
+	</select>
+	<select id="getBoardMaxNum" resultType="Integer">
+		SELECT MAX(BNUM) FROM BLIST_1
+	</select>
+	<insert id="boardInsert" parameterType="board">
+	    INSERT INTO B VALUES(BOARD_SEQ.NEXTVAL,#{btitle},#{bcontents},#{bid}
+	    ,default,default)
+	</insert>
+	<insert id="fileInsert" parameterType="Map">
+	    INSERT INTO F VALUES(FILE_SEQ.NEXTVAL,#{bnum},#{oriFileName},#{sysFileName},NULL)
+	</insert>
+	<insert id="replyInsert" parameterType="reply">
+	    INSERT INTO REPLY VALUES(#{rnum},#{bnum},#{rcontents},#{rid},default)
+	</insert>
+	<select id="getReplyList" parameterType="Integer"
+	         resultType="reply">
+		SELECT * FROM RLIST WHERE BNUM=#{bnum}
+	</select>
+	<select id="getBoardCount" resultType="Integer">
+		SELECT COUNT(*) FROM BLIST_1
+	</select>
+	
+
+</mapper>
